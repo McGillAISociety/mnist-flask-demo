@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Model</title>
+
+    <script>
+      async function submit() {
+        // Get the HTML elements.
+        let prediction = document.getElementById("prediction");
+        let file = document.getElementById("file");
+
+        // Ensure that there is a file uploaded, otherwise do nothing.
+        if (file.files.length === 0) {
+          return;
+        }
+
+        // Call the server's "/eval" endpoint with the file.
+        let response = await fetch("/eval", {
+          method: "POST",
+          body: file.files[0],
+        });
+
+        // Parse the JSON response.
+        let json = await response.json();
+
+        // Set the prediction and clear the input.
+        prediction.innerText = `Prediction: ${json.result}`;
+        file.value = "";
+      }
+    </script>
+  </head>
+  <body>
+    <input id="file" type="file" />
+    <button onclick="submit();">Submit</button>
+    <p id="prediction"></p>
+  </body>
+</html>
