@@ -1,0 +1,6 @@
+# Important: install jaxlib as per https://github.com/google/jax#installation
+jax
+flask
+flax
+transformers
+Pillow
