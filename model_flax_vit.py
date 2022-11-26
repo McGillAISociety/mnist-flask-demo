@@ -25,10 +25,11 @@ class ViTPipeline:
     def __init__(self, hugging_face_model_name: str) -> None:
         devices = np.array(jax.devices())  # (num_devices,)
 
-        # Defaults to a batch size (data parallelism, dp) of 1.
-        # (model parallelism axis, data parallelism axi/s).
+        # Defaults to a batch size of 1. (No data parallelism.)
         # Model is parallelized across all accelerator devices.
         self.device_mesh = devices.reshape((-1, 1))  # (num_devices, 1)
+
+        # Device mesh: (model parallelism axis, data parallelism axis).
         self.mesh_context = maps.Mesh(self.device_mesh, ("mp", "dp"))
 
         self.feature_extractor = ViTFeatureExtractor.from_pretrained(
